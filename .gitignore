@@ -1,0 +1,31 @@
+# Ignore all files without extension
+week-2/*
+!week-2/*.cpp
+!week-2/*.h
+!week-2/*.hpp
+!week-2/*.txt
+!week-2/*.md
+
+# Common C++ build artifacts
+*.o
+*.obj
+*.exe
+*.out
+*.a
+*.so
+*.dylib
+
+# Build directories
+build/
+bin/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
