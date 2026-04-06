@@ -29,3 +29,11 @@ bin/
 # OS files
 .DS_Store
 Thumbs.db
+
+# 1. Ignore everything
+*
+# 2. Unignore all directories (so Git can still look inside them)
+!*/
+# 3. Unignore all files that have a dot in their name (files with extensions)
+!*.*
+
