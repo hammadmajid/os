@@ -37,3 +37,5 @@ Thumbs.db
 # 3. Unignore all files that have a dot in their name (files with extensions)
 !*.*
 
+/project/auth.csv
+/project/user_files
