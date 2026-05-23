@@ -1,10 +1,16 @@
-# Ignore all files without extension
-week-2/*
-!week-2/*.cpp
-!week-2/*.h
-!week-2/*.hpp
-!week-2/*.txt
-!week-2/*.md
+# Ignore compiled executables (files without extension in week dirs)
+week-*/*
+week-*/*/*
+!week-*/*.cpp
+!week-*/*.h
+!week-*/*.hpp
+!week-*/*.txt
+!week-*/*.md
+!week-*/*/
+!week-*/*/*.cpp
+!week-*/*/*.h
+!week-*/*/*.hpp
+!week-*/*/*.md
 
 # Common C++ build artifacts
 *.o
@@ -30,12 +36,6 @@ bin/
 .DS_Store
 Thumbs.db
 
-# 1. Ignore everything
-*
-# 2. Unignore all directories (so Git can still look inside them)
-!*/
-# 3. Unignore all files that have a dot in their name (files with extensions)
-!*.*
-
+# Project-specific
 /project/auth.csv
 /project/user_files
