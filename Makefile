@@ -1,12 +1,12 @@
 # Compiler and flags
 CXX = g++
-CXXFLAGS = -Wall -Wextra -std=c++17
+CXXFLAGS = -Wall -Wextra -std=c++17 -pthread
 
-# Find all directories containing .cpp files (excluding hidden directories)
-SRC_DIRS = $(sort $(dir $(wildcard */*.cpp)))
+# Find all directories containing .cpp files (including nested directories)
+SRC_DIRS = $(sort $(dir $(wildcard */*.cpp */*/*.cpp)))
 
-# Find all .cpp files in all directories
-SOURCES = $(wildcard */*.cpp)
+# Find all .cpp files in all directories (both 1 and 2 levels deep)
+SOURCES = $(wildcard */*.cpp */*/*.cpp)
 
 # Create executable paths (same directory as source, no extension)
 EXECUTABLES = $(SOURCES:.cpp=)
