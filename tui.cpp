@@ -7,9 +7,21 @@
 #include <sstream>
 #include <string>
 #include <sys/stat.h>
+#include <sys/wait.h>
+#include <signal.h>
+#include <unistd.h>
 #include <vector>
 
 using namespace std;
+
+// Global variable to track if program was interrupted
+static bool programInterrupted = false;
+
+// Signal handler for SIGINT
+void signalHandler(int signum __attribute__((unused))) {
+  programInterrupted = true;
+  // Don't exit - let the parent process continue
+}
 
 struct Item {
   string name;
@@ -112,48 +124,53 @@ void executeFile(const string &cppPath) {
   cout << "Executing: " << filename << endl;
   cout << string(50, '=') << "\n" << endl;
 
-  // Execute binary and capture output
-  string command = "\"" + binaryPath + "\" 2>&1; echo \"__EXIT_CODE__:$?\"";
-  FILE *pipe = popen(command.c_str(), "r");
+  // Setup signal handler to catch Ctrl+C
+  signal(SIGINT, signalHandler);
+  programInterrupted = false;
 
-  if (!pipe) {
-    cerr << "Error: Could not execute binary" << endl;
+  // Fork and execute the binary directly (not through shell)
+  pid_t pid = fork();
+
+  if (pid == -1) {
+    cerr << "Error: Could not fork process" << endl;
     return;
   }
 
-  string output;
-  string exitCodeLine;
-  char buffer[256];
+  if (pid == 0) {
+    // Child process - execute the binary
+    execl(binaryPath.c_str(), binaryPath.c_str(), (char *)nullptr);
+    // If execl fails, exit child process
+    cerr << "Error: Could not execute binary" << endl;
+    exit(1);
+  } else {
+    // Parent process - wait for child and handle signals
+    int status;
+    waitpid(pid, &status, 0);
 
-  while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
-    string line = buffer;
-    if (line.find("__EXIT_CODE__:") == 0) {
-      exitCodeLine = line;
-    } else {
-      output += line;
-    }
-  }
-
-  pclose(pipe);
-
-  // Display output
-  if (!output.empty()) {
-    cout << output;
-  }
-
-  // Extract and display exit code
-  if (!exitCodeLine.empty()) {
-    int exitCode = atoi(exitCodeLine.substr(14).c_str());
+    // Display exit status
     cout << "\n" << string(50, '=') << endl;
-    cout << "Exit Code: " << exitCode;
-    if (exitCode == 0) {
-      cout << " (Success)";
-    } else {
-      cout << " (Error)";
+
+    if (WIFEXITED(status)) {
+      int exitCode = WEXITSTATUS(status);
+      cout << "Exit Code: " << exitCode;
+      if (exitCode == 0) {
+        cout << " (Success)";
+      } else {
+        cout << " (Error)";
+      }
+    } else if (WIFSIGNALED(status)) {
+      int signal = WTERMSIG(status);
+      cout << "Program terminated by signal: " << signal;
+      if (signal == SIGINT) {
+        cout << " (Interrupted)";
+      }
     }
     cout << endl;
     cout << string(50, '=') << "\n" << endl;
   }
+
+  // Restore default signal handler
+  signal(SIGINT, SIG_DFL);
 
   // Press any key to continue
   cout << "Press Enter to continue...";
@@ -169,9 +186,14 @@ void displayMenu(const string &currentPath, const vector<Item> &items) {
   cout << "Current Directory: " << currentPath << "\n" << endl;
   cout << "Items:\n" << endl;
 
+  // Calculate padding width needed for item numbers
+  int maxNum = items.size();
+  int width = to_string(maxNum).length();
+
   for (size_t i = 0; i < items.size(); ++i) {
     string prefix = items[i].isDirectory ? "[D] " : "[F] ";
-    cout << (i + 1) << ". " << prefix << items[i].name << endl;
+    // Right-align the item number with padding
+    cout << string(width - to_string(i + 1).length(), ' ') << (i + 1) << ". " << prefix << items[i].name << endl;
   }
 
   cout << "\n0. Quit" << endl;
