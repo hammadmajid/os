@@ -46,6 +46,11 @@ make clean
 make list
 ```
 
+### Interactive TUI File Explorer
+```bash
+make tui
+```
+
 ## Code Standards
 
 - **Language**: C++17
@@ -59,6 +64,7 @@ make list
 ## Make Targets
 
 - `make all` - Compile all C++ files
+- `make tui` - Compile and run the interactive TUI file explorer
 - `make clean` - Remove all compiled executables
 - `make list` - List all source files and directories
 - `make help` - Show help information
