@@ -1,12 +1,12 @@
 # Compiler and flags
 CXX = g++
-CXXFLAGS = -Wall -Wextra -std=c++17
+CXXFLAGS = -Wall -Wextra -std=c++17 -pthread
 
-# Find all directories containing .cpp files (excluding hidden directories)
-SRC_DIRS = $(sort $(dir $(wildcard */*.cpp)))
+# Find all directories containing .cpp files (including nested directories)
+SRC_DIRS = $(sort $(dir $(wildcard */*.cpp */*/*.cpp)))
 
-# Find all .cpp files in all directories
-SOURCES = $(wildcard */*.cpp)
+# Find all .cpp files in all directories (both 1 and 2 levels deep)
+SOURCES = $(wildcard */*.cpp */*/*.cpp)
 
 # Create executable paths (same directory as source, no extension)
 EXECUTABLES = $(SOURCES:.cpp=)
@@ -38,8 +38,15 @@ list:
 	@echo "Executables to be created:"
 	@echo "$(EXECUTABLES)" | tr ' ' '\n'
 
+# TUI target: compile and run the interactive file explorer
+tui: tui.cpp
+	@echo "Compiling TUI..."
+	$(CXX) $(CXXFLAGS) tui.cpp -o tui
+	@echo "Running TUI..."
+	@./tui
+
 # Phony targets
-.PHONY: all clean list help
+.PHONY: all clean list help tui
 
 # Help target
 help:
@@ -50,6 +57,7 @@ help:
 	@echo ""
 	@echo "Targets:"
 	@echo "  all     - Compile all .cpp files in all directories (default)"
+	@echo "  tui     - Compile and run the interactive TUI file explorer"
 	@echo "  clean   - Remove all compiled executables"
 	@echo "  list    - List all source files and directories"
 	@echo "  help    - Show this help message"
