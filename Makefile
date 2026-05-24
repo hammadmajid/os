@@ -38,8 +38,15 @@ list:
 	@echo "Executables to be created:"
 	@echo "$(EXECUTABLES)" | tr ' ' '\n'
 
+# TUI target: compile and run the interactive file explorer
+tui: tui.cpp
+	@echo "Compiling TUI..."
+	$(CXX) $(CXXFLAGS) tui.cpp -o tui
+	@echo "Running TUI..."
+	@./tui
+
 # Phony targets
-.PHONY: all clean list help
+.PHONY: all clean list help tui
 
 # Help target
 help:
@@ -50,6 +57,7 @@ help:
 	@echo ""
 	@echo "Targets:"
 	@echo "  all     - Compile all .cpp files in all directories (default)"
+	@echo "  tui     - Compile and run the interactive TUI file explorer"
 	@echo "  clean   - Remove all compiled executables"
 	@echo "  list    - List all source files and directories"
 	@echo "  help    - Show this help message"
