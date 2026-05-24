@@ -62,6 +62,3 @@ Displays updated list
  Constraints:
 Must simulate resizing manually
 Must avoid memory leak
-Class comments
-Your work
-Assigned
