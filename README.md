@@ -1,10 +1,10 @@
-# Operating Systems Course Project
+# CSCL 2205 Operating Systems
 
-A comprehensive C++17 implementation of Operating Systems concepts across 15 weeks, designed for Bachelor-level CS students.
+A comprehensive C++17 implementation of Operating Systems topics across 15 weeks.
 
 ## Project Structure
 
-Each week directory contains focused examples demonstrating core OS concepts:
+Each week directory contains focused examples demonstrating OS concepts:
 
 ### Week-by-Week Topics
 
@@ -55,54 +55,6 @@ make list
 - **Threading**: pthreads or C++17 std::thread
 - **Comments**: Only explain difficult OS concepts
 - **Code Style**: Clear variable names, minimal complexity
-
-## Running Examples
-
-Each week directory contains a README with specific run instructions:
-
-```bash
-cd week-1/os-introduction
-./system_call_demo
-./process_creation_demo
-```
-
-## Learning Outcomes
-
-By studying this project, students will:
-- Understand core OS concepts through practical examples
-- Learn how processes, threads, and resources work
-- Grasp synchronization, scheduling, and memory management
-- See real Linux system calls in action
-- Develop strong foundation in OS implementation
-
-## Directory Structure
-
-```
-os/
-├── README.md (this file)
-├── Makefile
-├── .gitignore
-├── week-1/os-introduction/
-├── week-2/process-scheduling/
-├── week-3/inter-process-communication/
-├── week-4/multithreading/
-├── week-5/cpu-scheduling/
-├── week-6/synchronization-critical-section/
-├── week-7/synchronization-hardware-problems/
-├── week-8/deadlocks/
-├── week-9/memory-management/
-├── week-10/virtual-memory/
-├── week-11/file-systems/
-├── week-12/directory-disk-structure/
-├── week-13/free-space-management/
-├── week-14/virtual-machines/
-└── week-15/system-protection-security/
-```
-
-Each week contains:
-- `README.md` - Topic overview and instructions
-- `*.cpp` - Example implementations
-- Compile/run commands in comments
 
 ## Make Targets
 
