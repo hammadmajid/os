@@ -15,7 +15,7 @@ int main() {
     }
     
     // Physical memory (4 frames * 4 bytes = 16 bytes total)
-    int physicalMemory[PHYSICAL_FRAMES * PAGE_SIZE];
+    int physicalMemory[PHYSICAL_FRAMES * PAGE_SIZE] = {0};
     
     cout << "=== PAGING SIMULATION ===" << endl;
     cout << "Virtual memory: " << VIRTUAL_PAGES << " pages × " << PAGE_SIZE << " bytes = " 
@@ -29,7 +29,18 @@ int main() {
     int nextFrame = 0;
     for (int vpn = 0; vpn < 6 && nextFrame < PHYSICAL_FRAMES; vpn++) {
         pageTable[vpn] = nextFrame;
-        cout << "Page " << vpn << " -> Frame " << nextFrame << endl;
+        
+        // Store page data in physical memory
+        for (int offset = 0; offset < PAGE_SIZE; offset++) {
+            physicalMemory[nextFrame * PAGE_SIZE + offset] = vpn * 100 + offset;
+        }
+        
+        cout << "Page " << vpn << " -> Frame " << nextFrame << " [Data: ";
+        for (int offset = 0; offset < PAGE_SIZE; offset++) {
+            cout << physicalMemory[nextFrame * PAGE_SIZE + offset];
+            if (offset < PAGE_SIZE - 1) cout << ", ";
+        }
+        cout << "]" << endl;
         nextFrame++;
     }
     
@@ -53,6 +64,7 @@ int main() {
         int physicalAddress = pageTable[vpn] * PAGE_SIZE + offset;
         cout << "  -> Physical Frame: " << pageTable[vpn] << endl;
         cout << "  -> Physical address: " << physicalAddress << endl;
+        cout << "  -> Data at address: " << physicalMemory[physicalAddress] << endl;
     } else {
         cout << "  -> Page fault! (page not in RAM)" << endl;
     }

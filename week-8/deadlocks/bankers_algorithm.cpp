@@ -35,11 +35,48 @@ int main() {
     cout << "=== BANKER'S ALGORITHM - DEADLOCK AVOIDANCE ===" << endl << endl;
     
     cout << "Initial State:" << endl;
+    cout << "Total System Resources: ";
+    for (int i = 0; i < MAX_RESOURCES; i++) {
+        cout << totalResources[i] << " ";
+    }
+    cout << endl;
+    
     cout << "Available Resources: ";
     for (int i = 0; i < MAX_RESOURCES; i++) {
         cout << available[i] << " ";
     }
+    cout << endl;
+    
+    // Validate: total allocated + available = total resources
+    int allocatedSum[MAX_RESOURCES] = {0};
+    for (int i = 0; i < MAX_PROCESSES; i++) {
+        for (int j = 0; j < MAX_RESOURCES; j++) {
+            allocatedSum[j] += allocation[i][j];
+        }
+    }
+    
+    cout << "Currently Allocated: ";
+    for (int i = 0; i < MAX_RESOURCES; i++) {
+        cout << allocatedSum[i] << " ";
+    }
     cout << endl << endl;
+    
+    // Verify resource conservation
+    bool resourceValid = true;
+    for (int i = 0; i < MAX_RESOURCES; i++) {
+        if (allocatedSum[i] + available[i] != totalResources[i]) {
+            cout << "ERROR: Resource " << i << " mismatch! (allocated: " << allocatedSum[i]
+                 << " + available: " << available[i] << " != total: " << totalResources[i] << ")" << endl;
+            resourceValid = false;
+        }
+    }
+    
+    if (resourceValid) {
+        cout << "✓ Resource validation passed (Allocated + Available = Total)" << endl << endl;
+    } else {
+        cout << "✗ Resource validation failed!" << endl << endl;
+        return 1;
+    }
     
     // Calculate need for each process
     int need[MAX_PROCESSES][MAX_RESOURCES];
