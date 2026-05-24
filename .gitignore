@@ -1,5 +1,7 @@
 # Ignore compiled executables (files without extension in week dirs)
 week-*/*
+projects/*
+lab-*/*
 week-*/*/*
 !week-*/*.cpp
 !week-*/*.h
@@ -11,6 +13,8 @@ week-*/*/*
 !week-*/*/*.h
 !week-*/*/*.hpp
 !week-*/*/*.md
+!lab-*/*.cpp
+!lab-*/*.md
 
 # Common C++ build artifacts
 *.o
