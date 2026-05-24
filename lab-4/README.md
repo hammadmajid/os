@@ -1,0 +1,11 @@
+# Lab 4 Implementation the Process Management using wait and exit
+
+## Task 01 
+Write a C++ program that creates a child process using fork() function. The parent process should wait for the child process to finish before it continues. The child process should print its own process ID and then exit with a specific exit code. The parent process should print its own process ID and also print the exit code that the child process returned. You must use fork() to create the process, exit() in the child process to terminate it, and wait() in the parent process to wait for the child to finish.
+
+Your program should work in the following way. When the program runs, the parent process should first print a message saying that it has created a child process. The child process should then print its process ID using getpid() and do some simple work like printing numbers from 1 to 5. After finishing its work the child process should call exit(0) to terminate itself. The parent process should use wait() to pause itself until the child is done. After the child finishes the parent should print the exit status of the child and then print a message saying that the child has finished and parent is now continuing its work.
+
+# Task 2
+Write a C++ program that creates three child processes using fork() function inside a loop. Each child process should do different work and exit with a different exit code. The parent process should wait for all three child processes to finish one by one using wait() in a loop. After each child finishes the parent should print which child finished and what exit code it returned. At the end the parent should print a message that all children have finished and parent is now done.
+
+Your program should work in the following way. The parent process should create three child processes using a loop that runs three times. The first child should print its ID and exit with code 1. The second child should print its ID and exit with code 2. The third child should print its ID and exit with code 3. The parent process should have a separate loop that calls wait() three times so it waits for all three children to finish. After each wait() call the parent should print the exit status of that child. Once all three children are done the parent should print a final message saying all child processes have finished successfully.
